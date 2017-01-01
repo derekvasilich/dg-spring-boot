@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="quotes")
@@ -21,7 +23,9 @@ public class Quote {
 	public Long id;
 
     public String status;
+    @Temporal(TemporalType.DATE)
     public Date expires;
+    @Temporal(TemporalType.DATE)
     public Date accepted_on;
 
     @OneToOne

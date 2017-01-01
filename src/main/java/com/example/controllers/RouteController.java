@@ -4,6 +4,9 @@ import com.example.models.Route;
 import com.example.models.RouteLocationVisit;
 import com.example.repositories.RouteLocationVisitRepository;
 import com.example.repositories.RouteRepository;
+import com.example.response.MessageResponse;
+
+import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,8 +43,15 @@ public class RouteController {
 	RouteLocationVisitRepository visitRepo;
 	
 	@GetMapping(path = "/{id}")
-	public @ResponseBody Route getRoute(@PathVariable Long id) {		
-		return routeRepo.findById(id).orElseThrow();
+	public ResponseEntity<?> getRoute(@PathVariable Long id) {		
+		try {
+			Route route = routeRepo.findById(id).orElseThrow();
+			return new ResponseEntity<Route>(route, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(new MessageResponse("Route not found!"));
+		}
 	}
 
 

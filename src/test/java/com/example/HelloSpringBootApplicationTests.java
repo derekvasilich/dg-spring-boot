@@ -1,6 +1,5 @@
 package com.example;
 
-import org.h2.server.web.WebApp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public abstract class HelloSpringBootApplicationTests {
 
 	@Test
 	void contextLoads() {
-
+		
 	}
 
 	protected void setUp() {

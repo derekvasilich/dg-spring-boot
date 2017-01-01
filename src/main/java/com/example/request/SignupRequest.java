@@ -6,6 +6,15 @@ public class SignupRequest {
     private String firstName;
     private String lastName;
 
+    public SignupRequest() {}
+
+    public SignupRequest(String email, String firstName, String lastName, String password) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

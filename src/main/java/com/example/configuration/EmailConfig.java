@@ -11,7 +11,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,14 +23,10 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
-@PropertySource(value = { "classpath:application.properties" })
 public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
 
     public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
     
-    private ApplicationContext applicationContext;
-    private Environment environment;
-
     @Value("${spring.mail.host}")
     private String mailServerHost;
 
@@ -53,6 +48,9 @@ public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
     @Value("${spring.mail.properties.mail.smtp.ssl.enable}")
     private String mailServerSSLEnabled;
 
+    @Value("${spring.mail.debug}")
+    private String mailDebugEnabled;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -71,7 +69,7 @@ public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
         if ("true".equalsIgnoreCase(mailServerSSLEnabled)) {
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");            
         }
-        props.put("mail.debug", "true");
+        props.put("mail.debug", mailDebugEnabled);
         
         return mailSender;
     }
@@ -122,12 +120,10 @@ public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
 
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 
     @Override
     public void setEnvironment(final Environment environment) {
-        this.environment = environment;
     }
 
 }

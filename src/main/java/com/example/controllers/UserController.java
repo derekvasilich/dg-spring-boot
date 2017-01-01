@@ -31,8 +31,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -104,14 +104,12 @@ public class UserController {
 
 	@PostMapping(path="/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
-		// TODO check for existing account with email
-		// thow error if found
-		// add user to the DB
 		if (userRepo.existsByEmail(request.getEmail())) {
 			return ResponseEntity
-				.status(HttpStatus.FORBIDDEN)
+				.status(HttpStatus.BAD_REQUEST)
 				.body(new MessageResponse("A user with that email already exists!"));
 		}
+
 		User newUser = new User(
 			request.getEmail(), 
 			request.getFirstName(),
@@ -124,37 +122,6 @@ public class UserController {
 		return ResponseEntity.ok(new SignupResponse("User registered successfully!", savedUser));
 	}
 
-	
-
-	// @Value("${app.smtp.host}")
-	// private String smtpHost;
-
-	// @Value("${app.smtp.port}")
-	// private int smtpPort;
-
-	// @Value("${app.smtp.username}")
-	// private String smtpUsername;
-
-	// @Value("${app.smtp.password}")
-	// private String smtpPassword;
-
-	// @Bean
-	// public JavaMailSender getJavaMailSender() {
-	// 	JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-	// 	mailSender.setHost(smtpHost);
-	// 	mailSender.setPort(smtpPort);
-	// 	mailSender.setUsername(smtpUsername);
-	// 	mailSender.setPassword(smtpPassword);
-
-	// 	Properties props = mailSender.getJavaMailProperties();
-	// 	props.put("mail.transport.protocol", "smtp");
-	// 	props.put("mail.transport.auth", "true");
-	// 	props.put("mail.transport.starttls.enable", "true");
-	// 	props.put("mail.debug", "true");
-
-	// 	return mailSender;
-	// }
-
 	@GetMapping(path="/users")
 	@PreAuthorize("hasAuthority('developer') or hasAuthority('admin')")
 	public @ResponseBody List<User> getUsers() {
@@ -162,17 +129,24 @@ public class UserController {
 	}
 
 	@PostMapping(path="/refreshtoken")
-	public @ResponseBody TokenRefreshResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+	public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
 		String requestRefreshToken = request.getRefreshToken();
-
-		return refreshTokenService.findByToken(requestRefreshToken)
-			.map(refreshTokenService::verifyExpiry)
-			.map(RefreshToken::getUser)
-			.map(user -> {
-				String token = jwtUtils.generateJwtToken(user.email);
-				return new TokenRefreshResponse(token, requestRefreshToken);
-			})
-			.orElseThrow(() -> new RuntimeException("Refresh token not found!"));
+		try {
+			return refreshTokenService.findByToken(requestRefreshToken)
+				.map(refreshTokenService::verifyExpiry)
+				.map(RefreshToken::getUser)
+				.map(user -> {
+					String token = jwtUtils.generateJwtToken(user.email);
+					return ResponseEntity
+						.status(HttpStatus.OK)
+						.body(new TokenRefreshResponse(token, requestRefreshToken));
+				})
+				.orElseThrow();
+		} catch (RuntimeException e) {
+			return ResponseEntity
+				.status(HttpStatus.UNAUTHORIZED)
+				.body(new MessageResponse(e.getMessage()));
+		}
 	}
 	
 }

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.FetchType;
 
 import com.example.converters.QuoteIdStringConverter;
@@ -31,6 +33,7 @@ public class Route {
 	@JoinColumn(name = "company_id")
 	public Company company;
 
+    @Temporal(TemporalType.DATE)
     public Date date;
 
     // @OneToOne

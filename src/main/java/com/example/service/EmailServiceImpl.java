@@ -65,7 +65,9 @@ public class EmailServiceImpl {
             message.setSubject(signupMailSubject);
 
             String textHtml = this.htmlTemplateEngine.process(EMAIL_HTML_TEMPLATE_NAME, ctx);
+            String textPlain = this.textTemplateEngine.process(EMAIL_TEXT_TEMPLATE_NAME, ctx);
             message.setText(textHtml, true);
+            message.setText(textPlain, false);
 
             // Add the inline image, referenced from the HTML code as "cid:${imageResourceName}"
             // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);

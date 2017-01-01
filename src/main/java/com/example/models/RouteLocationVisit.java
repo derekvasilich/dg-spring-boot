@@ -1,6 +1,6 @@
 package com.example.models;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +26,14 @@ public class RouteLocationVisit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
     public Long id;
+    @Column(nullable = false)
     public Long routeId;
+    @Column(nullable = false)
     public Long quoteId;
+    @Column(nullable = false)
     public Long userId;
-    public Date visitedAt;
+    @Column(nullable = false)
+    public Instant visitedAt;
 
     @ManyToOne
 	@JsonIgnore
@@ -37,13 +41,13 @@ public class RouteLocationVisit {
     public Route route;
 
     public RouteLocationVisit() {
-        
+        this.visitedAt = Instant.now();        
     }
 
     public RouteLocationVisit(Long routeId, Long quoteId, Long userId) {
         this.routeId = routeId;
         this.quoteId = quoteId;
         this.userId = userId;
-        this.visitedAt = new Date();
+        this.visitedAt = Instant.now();
     }
 }

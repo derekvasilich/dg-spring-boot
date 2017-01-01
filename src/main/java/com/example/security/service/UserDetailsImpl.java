@@ -40,6 +40,15 @@ public class UserDetailsImpl implements UserDetails {
 		this.authorities = authorities;
 	}
 
+	public static UserDetailsImpl build(org.springframework.security.core.userdetails.User user) {
+		return new UserDetailsImpl(
+			Long.valueOf(user.hashCode()), 
+			user.getUsername(), 
+			user.getUsername(), 
+			user.getPassword(), 
+			user.getAuthorities());
+	}
+
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(); 
 		authorities.add(new SimpleGrantedAuthority(user.role));
