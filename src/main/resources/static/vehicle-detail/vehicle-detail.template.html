@@ -1,0 +1,34 @@
+<div class="card mb-4 shadow-sm">
+	<div class="card-header">
+	  <h4 class="my-0 fw-normal">{{$ctrl.vehicle.name}}</h4>
+	</div>
+	<div class="card-body">
+	  <h1 class="card-title pricing-card-title">{{$ctrl.vehicle.price | currency}}</h1>
+		<img style="display:block; margin-left:auto; margin-right:auto;" ng-src="{{$ctrl.vehicle.description.description.style.stockImage.url}}" alt="{{$ctrl.vehicle.name}}" />
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td>ID</td>
+					<td>{{$ctrl.vehicle.id}}</td>
+				</tr>
+				<tr>
+					<td>VIN</td>
+					<td>{{$ctrl.vehicle.vin}}</td>
+				</tr>
+				<tr>
+					<td>Name</td>
+					<td>{{$ctrl.vehicle.name}}</td>
+				</tr>
+				<tr>
+					<td>Price</td>
+					<td>{{$ctrl.vehicle.price | currency}}</td>
+				</tr>
+				<tr ng-repeat="attach in $ctrl.vehicle.attachments">
+					<td>Guid</td>
+					<td>{{attach.media_guid}}</td>
+				</tr>				
+			</tbody>
+		</table>	  	  
+		<a href="#!/vehicles" class="w-100 btn btn-outline-primary"><i class="fa fa-chevron-left"></i> Back</a>
+	</div>
+</div>

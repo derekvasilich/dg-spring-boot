@@ -1,0 +1,19 @@
+type Description {
+	id: Int,
+	vin: String,
+	style_id: Int,
+	description: String
+}
+
+type Query {
+	allVehicles: [Vehicle],
+	getVehicleById(id: Int): Vehicle
+}
+
+type Vehicle {
+	id: Int,
+	vin: String,
+	name: String,
+	price: Float,
+	description: Description
+}

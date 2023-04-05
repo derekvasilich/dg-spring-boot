@@ -1,0 +1,36 @@
+<div class="mb-3">
+	<label class="form-label">Search</label>
+	<input class="form-control" ng-model="$ctrl.query">
+</div>
+<div class="mb-3">
+	<label class="form-label">Sort by</label>
+	<select value="id" class="form-select" ng-model="$ctrl.orderProp">
+	  <option value="">Select...</option>
+	  <option value="id">ID</option>
+	  <option value="name">Name</option>
+	  <option value="vin">VIN</option>
+	</select>
+	<div id="emailHelp" class="form-text">Total number of vehicles {{$ctrl.vehicles.length}}</div>
+</div>
+<!--<div class="mb-3">
+	<label for="customRange2" class="form-label">Price</label>
+	<input type="range" class="form-range" id="customRange2">	
+</div>-->
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>VIN</th>
+			<th>Name</th>	
+			<th style="text-align: right">Price</th>	
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="vehicle in $ctrl.vehicles | filter:$ctrl.query | orderBy:$ctrl.orderProp">
+			<td>{{vehicle.vin}}</td>
+			<td>{{vehicle.name}}</td>
+			<td style="text-align: right">{{vehicle.price | currency}}</td>
+			<td style="text-align: right"><a class="btn btn-outline-primary" href="#!/vehicles/{{vehicle.id}}">View</a></td>
+		</tr>
+	</tbody>
+</table>
