@@ -5,6 +5,8 @@
  */
 package com.example.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 public class Sha1PasswordEncoder implements PasswordEncoder {
 
+	private static final Logger log = LoggerFactory.getLogger(Sha1PasswordEncoder.class);
+
     @Autowired
     private Environment environment;	
 	
@@ -29,7 +33,7 @@ public class Sha1PasswordEncoder implements PasswordEncoder {
 			msdDigest.update(input.getBytes("UTF-8"), 0, input.length());
 			sha1 = DatatypeConverter.printHexBinary(msdDigest.digest());
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-			System.out.println("SHA-1 failed: "+e.getMessage());
+			log.error("SHA-1 failed: {}", e.getMessage());
 		}
 		return sha1;
 	}	
