@@ -6,6 +6,6 @@ Key Features:
 * Cloud deployment to AWS Elastic Beanstalk instance with EBS DB
 * JSON serialization / deserialization of Vehicle description information with Jackson
 * JWT Token based Authentication - token is generated upon successfull login
-* SHA1 (legacy) password login authentication - the sample data already contained SHA1 encrypted passwords
+* Customizable encrypted password login authentication
 * Simple GraphQL API for retreiving vehicle information from DB
 * REST Api for retreiving vehicle information from DB
