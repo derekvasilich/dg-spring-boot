@@ -25,7 +25,7 @@ public class ShaPasswordEncoder implements PasswordEncoder {
 	@Value("${app.security-salt}")
 	private String securitySalt;
 
-	@Value("$(app.security-algorithm)")
+	@Value("${app.security-algorithm}")
 	private String securityAlgorithm;
 
 	private String sha(String input) {
