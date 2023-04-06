@@ -9,3 +9,10 @@ Key Features:
 * Customizable encrypted password login authentication
 * Simple GraphQL API for retreiving vehicle information from DB
 * REST Api for retreiving vehicle information from DB
+* Legacy Angular frontend; it has been replaced with React (Next.js)
+
+TODO:
+- [ ] Add pagination to vehicles list
+- [ ] Add signup / registration page
+- [ ] Get full vehicle descriptions showing
+- [ ] Add tests for the API (junit) and frontend (Cypress)
