@@ -11,39 +11,39 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  *
  * @author derek
  */
-public class Sha1PasswordEncoder implements PasswordEncoder {
+public class ShaPasswordEncoder implements PasswordEncoder {
 
-	private static final Logger log = LoggerFactory.getLogger(Sha1PasswordEncoder.class);
+	private static final Logger log = LoggerFactory.getLogger(ShaPasswordEncoder.class);
 
-    @Autowired
-    private Environment environment;	
-	
-	private String sha1(String input) {
-		String sha1 = null;
+	@Value("${app.security-salt}")
+	private String securitySalt;
+
+	@Value("$(app.security-algorithm)")
+	private String securityAlgorithm;
+
+	private String sha(String input) {
+		String sha = null;
 		try {
-			MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
+			MessageDigest msdDigest = MessageDigest.getInstance(securityAlgorithm);
 			msdDigest.update(input.getBytes("UTF-8"), 0, input.length());
-			sha1 = DatatypeConverter.printHexBinary(msdDigest.digest());
+			sha = DatatypeConverter.printHexBinary(msdDigest.digest());
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-			log.error("SHA-1 failed: {}", e.getMessage());
+			log.error("Password Encoding failed: {}", e.getMessage());
 		}
-		return sha1;
+		return sha;
 	}	
 
 	@Override
 	public String encode(CharSequence cs) {
-		String salt = environment.getProperty("app.security-salt");
-		String str = salt + cs;
-		String pwd = sha1(str);
-		return pwd;
+		String str = securitySalt + cs;
+		return sha(str);
 	}
 
 	@Override
