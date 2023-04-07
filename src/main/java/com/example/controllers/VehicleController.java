@@ -40,7 +40,7 @@ public class VehicleController {
 		return vehicleRepo.findById(id);
 	}
 		
-	@GetMapping(path="/all")
+	@GetMapping
 	public @ResponseBody Iterable<Vehicle> getAllVehicles() {		
 		return vehicleRepo.findAll();
 	}
