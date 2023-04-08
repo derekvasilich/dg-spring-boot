@@ -19,6 +19,9 @@ jobs:
 
     runs-on: ubuntu-latest
     environment: maven-ci-cd
+    env:
+      MYSQL_DATABASE: ${{ vars.MYSQL_DATABASE }}
+      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
     services: 
       mysql:
@@ -44,6 +47,16 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      env: 
+        APP_JWTSECRET: ${{ secrets.APP_JWTSECRET }}
+        APP_SECURITY_SALT: ${{ secrets.APP_SECURITY_SALT }}
+        SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        APP_JWTEXPIRATIONMS: ${{ vars.APP_JWTEXPIRATIONMS }}
+        APP_SECURITY_ALGORITHM: ${{ vars.APP_SECURITY_ALGORITHM }}
+        SPRING_DATASOURCE_URL: ${{ vars.SPRING_DATASOURCE_URL }}
+        SPRING_DATASOURCE_USERNAME: ${{ vars.SPRING_DATASOURCE_USERNAME }}
+        SPRING_JPA_DATABASE_PLATFORM: ${{ vars.SPRING_JPA_DATABASE_PLATFORM }}
+        SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
