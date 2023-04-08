@@ -19,6 +19,20 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services: 
+      mysql:
+        image: mysql:5.7
+        ports: 
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: dealergears
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -28,6 +42,16 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      env: 
+        SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/dealergears
+        SPRING_DATASOURCE_USERNAME=mysql
+        SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQL5Dialect
+        SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        APP_JWTEXPIRATIONMS=86400000
+        APP_JWTSECRET=jwt-secret
+        APP_SECURITY_ALGORITHM=SHA-256
+        APP_SECURITY_SALT=test-security-salt
+
       run: mvn -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
