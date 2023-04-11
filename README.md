@@ -4,11 +4,11 @@ A simple REST / GraphQL API for logging into a Database and working with some ve
 
 Key Features: 
 * Cloud deployment to AWS Elastic Beanstalk instance with EBS DB
-* JSON serialization / deserialization of Vehicle description information with Jackson
+* JSON serialization / deserialization of Vehicle description information with Jackson Databind
 * JWT Token based Authentication - token is generated upon successfull login
 * Customizable encrypted password login authentication
-* Simple GraphQL API for retreiving vehicle information from DB
-* REST Api for retreiving vehicle information from DB
+* Simple GraphQL API for retrieving vehicle information from DB
+* REST Api for retrieving vehicle information from DB
 * Legacy Angular frontend; it has been replaced with React (Next.js)
 
 TODO:
