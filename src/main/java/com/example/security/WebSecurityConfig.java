@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.security.jwt.AuthEntryPointJwt;
 import com.example.security.jwt.AuthTokenFilter;
 import com.example.security.service.UserDetailsServiceImpl;
+
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -61,7 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        corsConfiguration.setAllowedOrigins(List.of(allowedOrigin));
+		String[] allowedOrigins = allowedOrigin.split("[,]");
+        corsConfiguration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
