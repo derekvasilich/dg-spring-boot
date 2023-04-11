@@ -54,7 +54,8 @@ jobs:
         SPRING_DATASOURCE_URL: ${{ vars.SPRING_DATASOURCE_URL }}
         SPRING_DATASOURCE_USERNAME: ${{ vars.SPRING_DATASOURCE_USERNAME }}
         SPRING_JPA_DATABASE_PLATFORM: ${{ vars.SPRING_JPA_DATABASE_PLATFORM }}
-        SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}        
+        SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}      
+ 
     - name: Install Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -70,6 +71,3 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ca-central-1
       run: eb deploy
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    # - name: Update dependency graph
-    #   uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
