@@ -50,10 +50,11 @@ jobs:
         SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         APP_JWTEXPIRATIONMS: ${{ vars.APP_JWTEXPIRATIONMS }}
         APP_SECURITY_ALGORITHM: ${{ vars.APP_SECURITY_ALGORITHM }}
+        APP_SECURITY_CORS_ALLOWED_ORIGIN: ${{ vars.APP_SECURITY_CORS_ALLOWED_ORIGIN }}
         SPRING_DATASOURCE_URL: ${{ vars.SPRING_DATASOURCE_URL }}
         SPRING_DATASOURCE_USERNAME: ${{ vars.SPRING_DATASOURCE_USERNAME }}
         SPRING_JPA_DATABASE_PLATFORM: ${{ vars.SPRING_JPA_DATABASE_PLATFORM }}
-        SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}
+        SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}        
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
