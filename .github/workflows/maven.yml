@@ -56,7 +56,7 @@ jobs:
         SPRING_JPA_DATABASE_PLATFORM: ${{ vars.SPRING_JPA_DATABASE_PLATFORM }}
         SPRING_JPA_HIBERNATE_DDL_AUTO: ${{ vars.SPRING_JPA_HIBERNATE_DDL_AUTO }}      
  
-    - name: Install Python 3.9
+    - name: Install Python 3.11
       uses: actions/setup-python@v2
       with:
         python-version: 3.11
