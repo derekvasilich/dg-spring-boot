@@ -1,8 +1,9 @@
+scalar JSON
 type Description {
 	id: Int,
 	vin: String,
 	style_id: Int,
-	description: String
+	description: JSON
 }
 
 type Query {

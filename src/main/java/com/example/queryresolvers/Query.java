@@ -5,9 +5,11 @@
  */
 package com.example.queryresolvers;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.example.models.Vehicle;
 import com.example.repositories.VehicleRepository;
+
+import graphql.kickstart.tools.GraphQLQueryResolver;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
