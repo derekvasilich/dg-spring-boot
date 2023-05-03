@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,7 +34,8 @@ public class Vehicle implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
-	public Long id;		
+	public Long id;	
+	public Long company_id;	
 	public String vin;
 	public String name;
 	public Float price;
@@ -43,5 +45,8 @@ public class Vehicle implements Serializable {
 	
 	@OneToOne(mappedBy="vehicle")
 	public Description description;
-	
+
+	@OneToOne
+	@JoinColumn(name = "company_id", insertable = false, updatable = false)
+	public Company company;
 }

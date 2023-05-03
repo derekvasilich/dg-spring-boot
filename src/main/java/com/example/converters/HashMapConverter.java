@@ -3,27 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example;
+package com.example.converters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-import java.util.Map;
-
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author derek
  */
-public class HashMapConverter implements AttributeConverter<Map<String, Object>, String> {
+@Component
+@Converter
+@Configurable
+public class HashMapConverter implements AttributeConverter<JsonNode, String> {
 
 	private static final Logger log = LoggerFactory.getLogger(HashMapConverter.class);
 	
@@ -35,7 +40,7 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
     }	
 	
     @Override
-    public String convertToDatabaseColumn(Map<String, Object> customerInfo) {
+    public String convertToDatabaseColumn(JsonNode customerInfo) {
 
         String customerInfoJson = null;
         try {
@@ -48,11 +53,11 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
     }
 
     @Override
-    public Map<String, Object> convertToEntityAttribute(String customerInfoJSON) {
+    public JsonNode convertToEntityAttribute(String customerInfoJSON) {
 
-        Map<String, Object> customerInfo = null;
+        JsonNode customerInfo = null;
         try {
-            customerInfo = objectMapper.readValue(customerInfoJSON, Map.class);
+            customerInfo = objectMapper.readValue(customerInfoJSON, JsonNode.class);
         } catch (final IOException e) {
             log.error("JSON reading error: " + e.getMessage());
         }

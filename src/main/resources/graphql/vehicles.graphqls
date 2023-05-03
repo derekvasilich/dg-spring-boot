@@ -7,8 +7,57 @@ type Description {
 }
 
 type Query {
+	getProfile: User,
+	allCustomers: [Customer],
 	allVehicles: [Vehicle],
+	allVehiclesPaginated(page: Int, size: Int): VehicleConnection @connection(for: "Vehicle"),
 	getVehicleById(id: Int): Vehicle
+}
+
+type PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type User {
+	id: Int,
+	email: String,
+	role: String,
+	firstName: String,
+	lastName: String
+}
+
+type Company {
+	id: Int,
+	type: String,
+	companyName: String,
+	email: String,
+	firstName: String,
+	lastName: String
+	phone: String,
+	address_1: String,
+	postal: String,
+	city: String,
+	province: String,
+	country: String,
+	lat: Float,
+	lng: Float
+}
+
+type Customer {
+	id: Int,
+	firstName: String,
+	lastName: String
+	email: String,
+	phone: String,
+	mobile: String,
+	address_1: String,
+	postal: String,
+	city: String,
+	province: String,
+	country: String,
+	lat: Float,
+	lng: Float
 }
 
 type Vehicle {
@@ -16,5 +65,6 @@ type Vehicle {
 	vin: String,
 	name: String,
 	price: Float,
-	description: Description
+	description: Description,
+	company: Company
 }

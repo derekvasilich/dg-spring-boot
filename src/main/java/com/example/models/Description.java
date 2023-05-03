@@ -5,7 +5,8 @@
  */
 package com.example.models;
 
-import com.example.HashMapConverter;
+import com.example.converters.HashMapConverter;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Convert;
-
-import java.util.Map;
 
 /**
  *
@@ -35,9 +34,9 @@ public class Description {
 	public Long style_id;
 	
 	@Convert(converter = HashMapConverter.class)
-    public Map<String, Object> description;
+    public JsonNode description;
 	
 	@OneToOne
 	@JoinColumn(name = "vehicle_id")
-	private Vehicle vehicle;
+	public Vehicle vehicle;
 }

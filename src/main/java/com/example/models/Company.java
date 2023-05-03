@@ -20,41 +20,43 @@ import javax.persistence.Table;
  * @author derek
  */
 @Entity
-@Table(name="users")
+@Table(name="customers")
 @NamedQueries({
 	@NamedQuery(
-		name = "User.findByEmail", 
-		query = "SELECT u FROM User u WHERE u.email = :email"
+		name = "Company.findByTruckAbbrev", 
+		query = "SELECT u FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
 	),
 	@NamedQuery(
-		name = "User.findByEmail.count", 
-		query = "SELECT count(u) FROM User u WHERE u.email = :email"
-	),
-	@NamedQuery(
-		name = "User.existsByEmail", 
-		query = "SELECT CASE WHEN COUNT(u) > 0 THEN 'true' ELSE 'false' END FROM User u WHERE u.email = :email"
-	),
-	@NamedQuery(
-		name = "User.existsByEmail.count", 
-		query = "SELECT count(u) FROM User u WHERE u.email = :email"
+		name = "Company.findByTruckAbbrev.count", 
+		query = "SELECT count(u) FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
 	)
 })
-public class User implements Serializable {
+public class Company implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	public Long id;
-	public String email;
-	public String role;
-	private String password;
+	@Column(name="truck_abbrev")
+	public String truckAbbrev;
+	public String type;
+	@Column(name="company_name")
+	public String companyName;
 	
 	@Column(name="first_name")
 	public String firstName;
 	@Column(name="last_name")
 	public String lastName;
+	public String email;
 	
-	public String getPassword() {
-		return password;
-	}
+	public String phone;
+	public String mobile;
+	public String address_1;
+	public String city;
+	public String province;
+	public String postal;
+	public String country;
+	
+	public Float lat;
+	public Float lng;
 }

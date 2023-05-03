@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.controllers;
 
-import com.example.models.Vehicle;
-import com.example.repositories.VehicleRepository;
+import com.example.models.Route;
+import com.example.repositories.RouteRepository;
 
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
@@ -26,28 +21,30 @@ import org.springframework.web.bind.annotation.RestController;
  * @author derek
  */
 @RestController
-@RequestMapping(path="/api/vehicles")
+@RequestMapping(path="/api/routes")
 @CrossOrigin(origins = "http://localhost:3000")
-public class VehicleController {
+public class RouteController {
 	
-//	private static final Logger log = LoggerFactory.getLogger(VehicleController.class);
+//	private static final Logger log = LoggerFactory.getLogger(RouteController.class);
 		
 	@Autowired
-	VehicleRepository vehicleRepo;
+	RouteRepository routeRepo;
 	
 	@GetMapping(path = "/{id}")
-	public @ResponseBody Vehicle getVehicle(@PathVariable Long id) {		
-		return vehicleRepo.findById(id).orElseThrow();
-	}
-		
-	@GetMapping(path = "")
-	public @ResponseBody Iterable<Vehicle> getAllVehicles() {		
-		return vehicleRepo.findAll();
+	public @ResponseBody Route getRoute(@PathVariable Long id) {		
+		return routeRepo.findById(id).orElseThrow();
 	}
 
-	@GetMapping(path = "/paginated")
-	public @ResponseBody Page<Vehicle> getAllVehiclesPaginated(Pageable p) {		
-		return vehicleRepo.findAll(p);
+
+	@GetMapping(path = "")
+	public @ResponseBody Iterable<Route> getAllRoutes() {		
+		return routeRepo.findAll();
 	}
+
+
+	@GetMapping(path = "/paginated")
+	public @ResponseBody Page<Route> getAllRoutesPaginated(Pageable p) {		
+		return routeRepo.findAll(p);
+	}    
 
 }

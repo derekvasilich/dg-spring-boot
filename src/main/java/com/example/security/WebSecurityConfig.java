@@ -18,6 +18,7 @@ import com.example.security.jwt.AuthEntryPointJwt;
 import com.example.security.jwt.AuthTokenFilter;
 import com.example.security.service.UserDetailsServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.web.cors.CorsConfiguration;
@@ -37,6 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${app.security-cors-allowed-origin}")
 	private String allowedOrigin;
+
+	@Value("${graphql.graphiql.enabled}")
+	private boolean graphiqlEnabled;
 
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -66,17 +70,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		String[] allowedOrigins = allowedOrigin.split(",");
         corsConfiguration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
-        corsConfiguration.setAllowCredentials(true);
+        // corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
-		
+
+		ArrayList<String> antPatternStrings = new ArrayList<String>();
+		antPatternStrings.add("/api/login");
+		antPatternStrings.add("/api/test/**");
+		if (true == graphiqlEnabled) {
+			antPatternStrings.add("/graphiql");
+			antPatternStrings.add("/vendor/graphiql/**");
+			System.out.println("=========================== WARNING: INSECURE! ==================================");
+			System.out.println(antPatternStrings.toString());
+			System.out.println("=================================================================================");
+		}
 		http.cors().configurationSource(request -> corsConfiguration).and()
 			.csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/api/login").permitAll()
-			.antMatchers("/api/test/**").permitAll()
+			.authorizeRequests().antMatchers(antPatternStrings.toArray(String[]::new)).permitAll()
 			.anyRequest().authenticated();
-
+		
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
