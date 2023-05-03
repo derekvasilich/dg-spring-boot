@@ -8,7 +8,7 @@ Key Features:
 * JWT Token based Authentication - token is generated upon successfull login
 * Customizable encrypted password login authentication
 * Simple GraphQL API for retrieving vehicle information from DB
-* REST Api for retrieving vehicle information from DB
+* REST Api for retrieving vehicle information from DB and for retrieving Route information
 * Legacy Angular frontend; it has been replaced with React (Next.js)
 
 TODO:
