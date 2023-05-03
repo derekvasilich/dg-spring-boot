@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${app.security-cors-allowed-origin}")
 	private String allowedOrigin;
 
-	@Value("${graphql.graphiql.enabled}")
+	@Value("${graphql.graphiql.enabled:false}")
 	private boolean graphiqlEnabled;
 
 	@Bean
