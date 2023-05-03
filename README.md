@@ -12,7 +12,7 @@ Key Features:
 * Legacy Angular frontend; it has been replaced with React (Next.js)
 
 TODO:
-- [ ] Add pagination to vehicles list
+- [x] Add pagination to vehicles list
 - [ ] Add signup / registration page
-- [ ] Get full vehicle descriptions showing
+- [x] Get full vehicle descriptions showing
 - [ ] Add tests for the API (junit) and frontend (Cypress)
