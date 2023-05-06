@@ -65,7 +65,7 @@ public class UserController {
 
 		return new JwtResponse(token, 
 			userDetails.getEmail(), 
-			userDetails.getPassword(),
+			userDetails.getId(),
 			roles);
 	}
 	

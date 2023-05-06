@@ -3,6 +3,7 @@ package com.example.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.FetchType;
 
 import com.example.converters.QuoteIdStringConverter;
 
@@ -37,8 +39,9 @@ public class Route {
     @Column(name="start_address")
     public Integer startAddress;
 
+    @Basic(fetch=FetchType.LAZY)
     @Convert(converter = QuoteIdStringConverter.class)
-    @Column(name="quote_ids")
+    @Column(name="quote_ids")    
     public List<Quote> quotes;
 
     public Integer duration;

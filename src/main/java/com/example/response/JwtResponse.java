@@ -12,13 +12,13 @@ public class JwtResponse {
 	private String token;
 	private String type = "Bearer";
 	private String username;
-	private String password;
+	private Long id;
 	private List<String> roles;
 
-	public JwtResponse(String jwt, String username, String password, List<String> roles) {
+	public JwtResponse(String jwt, String username, Long id, List<String> roles) {
 		this.token = jwt;
 		this.username = username;
-		this.password = password;
+		this.id = id;
 		this.roles = roles;
 	}
 	
@@ -34,8 +34,8 @@ public class JwtResponse {
 		return this.username;
 	}
 
-	public String getPassword() {
-		return this.password;
+	public Long getId() {
+		return this.id;
 	}
 	
 	public List<String> getRoles() {

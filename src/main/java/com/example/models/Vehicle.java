@@ -46,7 +46,7 @@ public class Vehicle implements Serializable {
 	@OneToOne(mappedBy="vehicle")
 	public Description description;
 
-	@OneToOne
+	@OneToOne(optional = true)
 	@JoinColumn(name = "company_id", insertable = false, updatable = false)
 	public Company company;
 }
