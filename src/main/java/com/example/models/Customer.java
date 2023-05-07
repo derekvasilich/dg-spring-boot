@@ -16,6 +16,12 @@ public class Customer {
 	@Column(name="id")
 	public Long id;
 
+	// ABA
+	// @Column(name="company_name")
+	// public String companyName;
+	@Column(name="legal_name")
+	public String legalName;
+
 	@Column(name="first_name")
 	public String firstName;
 	@Column(name="last_name")

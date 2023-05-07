@@ -47,7 +47,7 @@ public class VehicleController {
 
 	@GetMapping(path = "/paginated")
 	public @ResponseBody Page<Vehicle> getAllVehiclesPaginated(Pageable p) {		
-		return vehicleRepo.findAll(p);
+			return vehicleRepo.findAll(p);
 	}
 
 }

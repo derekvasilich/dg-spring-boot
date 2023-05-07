@@ -20,16 +20,19 @@ import javax.persistence.Table;
  * @author derek
  */
 @Entity
-@Table(name="customers")
+@Table(name="companies")
+// ABA
+// @Table(name="customers")
 @NamedQueries({
-	@NamedQuery(
-		name = "Company.findByTruckAbbrev", 
-		query = "SELECT u FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
-	),
-	@NamedQuery(
-		name = "Company.findByTruckAbbrev.count", 
-		query = "SELECT count(u) FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
-	)
+	// ABA
+	// @NamedQuery(
+	// 	name = "Company.findByTruckAbbrev", 
+	// 	query = "SELECT u FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
+	// ),
+	// @NamedQuery(
+	// 	name = "Company.findByTruckAbbrev.count", 
+	// 	query = "SELECT count(u) FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
+	// )
 })
 public class Company implements Serializable {
 	
@@ -37,10 +40,13 @@ public class Company implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	public Long id;
-	@Column(name="truck_abbrev")
-	public String truckAbbrev;
+	// ABA
+	// @Column(name="truck_abbrev")
+	// public String truckAbbrev;
 	public String type;
-	@Column(name="company_name")
+	@Column(name="name")
+	// ABA
+	// @Column(name="company_name")
 	public String companyName;
 	
 	@Column(name="first_name")
