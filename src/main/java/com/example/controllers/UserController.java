@@ -5,10 +5,14 @@
  */
 package com.example.controllers;
 
+import com.example.models.RefreshToken;
 import com.example.repositories.UserRepository;
 import com.example.request.LoginRequest;
+import com.example.request.TokenRefreshRequest;
 import com.example.response.JwtResponse;
+import com.example.response.TokenRefreshResponse;
 import com.example.security.jwt.JwtUtils;
+import com.example.security.service.RefreshTokenService;
 import com.example.security.service.UserDetailsImpl;
 import java.util.List;
 
@@ -16,6 +20,8 @@ import java.util.List;
 // import org.slf4j.LoggerFactory;
 
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,6 +51,9 @@ public class UserController {
 	
 	@Autowired
 	UserRepository userRepo;
+
+	@Autowired
+	RefreshTokenService refreshTokenService;
 	
 	@Autowired
 	JwtUtils jwtUtils;	
@@ -56,17 +65,33 @@ public class UserController {
 				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String token = jwtUtils.generateJwtToken(authentication);
-		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
+		String jwt = jwtUtils.generateJwtToken(userDetails);
+		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+		
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return new JwtResponse(token, 
+		return new JwtResponse(jwt, 
+			refreshToken.getToken(),
 			userDetails.getEmail(), 
 			userDetails.getId(),
 			roles);
+	}
+
+	@PostMapping(path="/refreshtoken")
+	public @ResponseBody TokenRefreshResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+		String requestRefreshToken = request.getRefreshToken();
+
+		return refreshTokenService.findByToken(requestRefreshToken)
+			.map(refreshTokenService::verifyExpiry)
+			.map(RefreshToken::getUser)
+			.map(user -> {
+				String token = jwtUtils.generateJwtToken(user.email);
+				return new TokenRefreshResponse(token, requestRefreshToken);
+			})
+			.orElseThrow(() -> new RuntimeException("Refresh token not found!"));
 	}
 	
 }

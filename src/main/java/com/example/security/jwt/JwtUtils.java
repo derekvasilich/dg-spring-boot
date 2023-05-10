@@ -5,7 +5,6 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.example.security.service.UserDetailsImpl;
@@ -24,12 +23,13 @@ public class JwtUtils {
 	@Value("${app.jwtSigningAlgorithm}")
 	private String jwtSigningAlgorithm;
 
-	public String generateJwtToken(Authentication authentication) {
+	public String generateJwtToken(UserDetailsImpl userPrincipal) {
+		return generateJwtToken(userPrincipal.getEmail());
+	}
 
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
+	public String generateJwtToken(String email) {
 		return Jwts.builder()
-				.setSubject((userPrincipal.getEmail()))
+				.setSubject(email)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.forName(jwtSigningAlgorithm), jwtSecret)
@@ -50,6 +50,7 @@ public class JwtUtils {
 			logger.error("Invalid JWT token: {}", e.getMessage());
 		} catch (ExpiredJwtException e) {
 			logger.error("JWT token is expired: {}", e.getMessage());
+			throw e;
 		} catch (UnsupportedJwtException e) {
 			logger.error("JWT token is unsupported: {}", e.getMessage());
 		} catch (IllegalArgumentException e) {

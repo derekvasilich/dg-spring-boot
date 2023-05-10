@@ -24,6 +24,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.security.service.UserDetailsServiceImpl;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 public class AuthTokenFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -48,6 +50,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
+		} catch (ExpiredJwtException e) {
+			
 		} catch (Exception e) {
 			logger.error("Cannot set user authentication: {}", e);
 		}

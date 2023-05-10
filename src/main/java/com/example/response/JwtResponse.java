@@ -11,12 +11,14 @@ public class JwtResponse {
 
 	private String token;
 	private String type = "Bearer";
+	private String refreshToken;
 	private String username;
 	private Long id;
 	private List<String> roles;
 
-	public JwtResponse(String jwt, String username, Long id, List<String> roles) {
+	public JwtResponse(String jwt, String refresh, String username, Long id, List<String> roles) {
 		this.token = jwt;
+		this.refreshToken = refresh;
 		this.username = username;
 		this.id = id;
 		this.roles = roles;
@@ -26,6 +28,10 @@ public class JwtResponse {
 		return this.token;
 	}
 	
+	public String getRefreshToken() {
+		return this.refreshToken;
+	}
+
 	public String getType() {
 		return this.type;
 	}

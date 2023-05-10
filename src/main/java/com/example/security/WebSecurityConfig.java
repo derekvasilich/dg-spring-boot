@@ -75,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		ArrayList<String> antPatternStrings = new ArrayList<String>();
 		antPatternStrings.add("/api/login");
+		antPatternStrings.add("/api/refreshtoken");
 		antPatternStrings.add("/api/test/**");
 		if (true == graphiqlEnabled) {
 			antPatternStrings.add("/graphiql");
