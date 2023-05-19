@@ -1,6 +1,6 @@
 # dg-spring-boot
 
-A simple REST / GraphQL API for logging into a Database and working with some vehicle data. Filtering and sorting is done on the Front-end as of present.
+A REST / GraphQL API for logging into a Database and working with some vehicle data. Filtering and sorting is done on the Front-end as of present.
 
 Key Features: 
 * Cloud deployment to AWS Elastic Beanstalk instance with EBS DB
