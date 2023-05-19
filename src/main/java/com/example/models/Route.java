@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
@@ -43,6 +44,9 @@ public class Route {
     @Convert(converter = QuoteIdStringConverter.class)
     @Column(name="quote_ids")    
     public List<Quote> quotes;
+
+    @OneToMany(mappedBy = "route")
+    public List<RouteLocationVisit> visits;
 
     public Integer duration;
     public Integer distance;    

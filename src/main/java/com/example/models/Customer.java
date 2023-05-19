@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.configuration.AppConfig;
+
 @Entity
 @Table(name="customers")
 public class Customer {
@@ -16,10 +18,7 @@ public class Customer {
 	@Column(name="id")
 	public Long id;
 
-	// ABA
-	// @Column(name="company_name")
-	// public String companyName;
-	@Column(name="legal_name")
+	@Column(name=AppConfig.legalNameColumn)
 	public String legalName;
 
 	@Column(name="first_name")

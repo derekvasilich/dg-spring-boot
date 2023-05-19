@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,15 +18,13 @@ import com.example.security.jwt.AuthEntryPointJwt;
 import com.example.security.jwt.AuthTokenFilter;
 import com.example.security.service.UserDetailsServiceImpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableGlobalMethodSecurity(
-		// securedEnabled = true,
-		// jsr250Enabled = true,
+		securedEnabled = true,
 		prePostEnabled = true)
 public class WebSecurityConfig {
 	@Autowired
@@ -62,11 +59,6 @@ public class WebSecurityConfig {
 		return authProvider;
 	}
 
-	// @Bean
-	// public WebSecurityCustomizer webSecurityCustomizer() {
-	//   return (web) -> web.ignoring().antMatchers("/js/**", "/images/**"); 
-	// }
-
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new ShaPasswordEncoder();
@@ -82,10 +74,11 @@ public class WebSecurityConfig {
         // corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
-		ArrayList<String> antPatternStrings = new ArrayList<String>();
-		antPatternStrings.add("/api/login");
-		antPatternStrings.add("/api/refreshtoken");
-		antPatternStrings.add("/api/test/**");
+		List<String> antPatternStrings = Arrays.asList(
+			"/api/login", "/api/signup", "/api/refreshtoken", "/api/test/**", 
+			// Deprecated AngularJS frontend
+			"/", "/webjars/**", "/js/**", "/vehicle-list/**", "/vehicle-detail/**"
+		);
 		if (true == graphiqlEnabled) {
 			antPatternStrings.add("/graphiql");
 			antPatternStrings.add("/vendor/graphiql/**");

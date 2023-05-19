@@ -6,6 +6,7 @@
 package com.example.models;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,24 +16,23 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.example.configuration.AppConfig;
+
 /**
  *
  * @author derek
  */
 @Entity
-@Table(name="companies")
-// ABA
-// @Table(name="customers")
+@Table(name=AppConfig.companyTable)
 @NamedQueries({
-	// ABA
-	// @NamedQuery(
-	// 	name = "Company.findByTruckAbbrev", 
-	// 	query = "SELECT u FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
-	// ),
-	// @NamedQuery(
-	// 	name = "Company.findByTruckAbbrev.count", 
-	// 	query = "SELECT count(u) FROM Company u WHERE u.truckAbbrev = :truckAbbrev"
-	// )
+	@NamedQuery(
+		name = AppConfig.namedQuery1Name, 
+		query = AppConfig.namedQuery1Query
+	),
+	@NamedQuery(
+		name = AppConfig.namedQuery2Name, 
+		query = AppConfig.namedQuery2Query
+	)
 })
 public class Company implements Serializable {
 	
@@ -40,13 +40,11 @@ public class Company implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	public Long id;
-	// ABA
-	// @Column(name="truck_abbrev")
-	// public String truckAbbrev;
+	@Column(name=AppConfig.truckAbbrevColumn)
+	public String truckAbbrev;
 	public String type;
-	@Column(name="name")
-	// ABA
-	// @Column(name="company_name")
+
+	@Column(name=AppConfig.companyNameColumn)
 	public String companyName;
 	
 	@Column(name="first_name")

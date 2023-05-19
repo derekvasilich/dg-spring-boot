@@ -46,6 +46,7 @@ type Company {
 
 type Customer {
 	id: Int,
+	legalName: String,
 	firstName: String,
 	lastName: String
 	email: String,

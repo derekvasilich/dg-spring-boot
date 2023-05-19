@@ -11,7 +11,7 @@ component('vehicleList', {
 	templateUrl: 'vehicle-list/vehicle-list.template.html',
 	controller: function VehicleListController($http) {
 		var self = this;
-		$http.get('api/vehicles/all', {cache:true}).then(function(response) {
+		$http.get('api/vehicles', {cache:true}).then(function(response) {
 			self.vehicles = response.data;
 		});
 	}
