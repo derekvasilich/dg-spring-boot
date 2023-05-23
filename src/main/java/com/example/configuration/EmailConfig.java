@@ -25,7 +25,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @PropertySource("classpath:mail.properties")
-@PropertySource("classpath:application.properties")
+@PropertySource(value="classpath:application.properties", ignoreResourceNotFound=true)
 public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
 
     public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
