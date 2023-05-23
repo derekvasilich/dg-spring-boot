@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,7 @@ import com.example.models.User;
 import com.example.security.service.RefreshTokenService;
 
 @Service
+@PropertySource("classpath:mail.properties")
 public class EmailServiceImpl {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);

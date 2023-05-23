@@ -11,6 +11,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,6 +24,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
+@PropertySource("classpath:mail.properties")
+@PropertySource("classpath:application.properties")
 public class EmailConfig implements ApplicationContextAware, EnvironmentAware {
 
     public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
