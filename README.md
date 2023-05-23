@@ -10,9 +10,10 @@ Key Features:
 * Simple GraphQL API for retrieving vehicle information from DB
 * REST Api for retrieving vehicle information from DB and for retrieving Route information
 * Legacy Angular frontend; it has been replaced with React (Next.js)
+* REST Api tests with Junit and Mockito
 
 TODO:
 - [x] Add pagination to vehicles list
-- [ ] Add signup / registration page
+- [x] Add signup / registration API calls
 - [x] Get full vehicle descriptions showing
-- [ ] Add tests for the API (junit) and frontend (Cypress)
+- [x] Add tests for the API (junit & mockito)
