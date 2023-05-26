@@ -2,6 +2,7 @@ image: maven:3.8-openjdk-11
 
 stages:
   - build
+  - deploy
 
 variables:
   # This will suppress any download for dependencies and plugins or upload messages which would clutter the console log.
@@ -25,7 +26,7 @@ variables:
 
 cache:
   key: 
-    file:
+    files:
       - pom.xml
   paths:
     - .m2/repository
@@ -42,3 +43,8 @@ java-build-and-test:
       # declare the JUnit reports (recursive pattern for multi-module projects)
       junit:
         - "**/target/*-reports/TEST-*.xml"
+
+deploy:
+  stage: deploy
+  script: echo "Define your deployment script!"
+  environment: production
