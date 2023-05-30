@@ -1,4 +1,4 @@
-image: maven:3.8-openjdk-11
+image: gitlab.derekwilliams.biz:5050/dealer-gears/dg-android/docker-java
 
 stages:
   - build
