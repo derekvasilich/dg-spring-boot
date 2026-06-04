@@ -75,7 +75,7 @@ public class WebSecurityConfig {
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
 		List<String> antPatternStrings = Arrays.asList(
-			"/api/login", "/api/signup", "/api/refreshtoken", "/api/test/**", 
+			"/api/login", "/api/signup", "/api/refreshtoken", "/api/test/**", "/api/status",
 			// Deprecated AngularJS frontend
 			"/", "/webjars/**", "/js/**", "/vehicle-list/**", "/vehicle-detail/**"
 		);

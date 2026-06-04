@@ -48,7 +48,8 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
-	public Long id;
+	private long id;
+
 	public String email;
 	public String role;
 	@JsonIgnore()
@@ -67,6 +68,13 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.password = encodedPassword;
 		this.role = User.DEFAULT_ROLE;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getId() {
+		return id;
 	}
 
 	public String getPassword() {

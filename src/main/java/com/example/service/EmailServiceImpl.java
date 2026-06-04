@@ -28,7 +28,7 @@ public class EmailServiceImpl {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private static final String EMAIL_TEXT_TEMPLATE_NAME = "text/signup";
+    // private static final String EMAIL_TEXT_TEMPLATE_NAME = "text/signup";
     private static final String EMAIL_HTML_TEMPLATE_NAME = "html/signup";
 
     @Autowired
@@ -40,8 +40,8 @@ public class EmailServiceImpl {
     @Autowired
     private TemplateEngine htmlTemplateEngine;
 
-    @Autowired
-    private TemplateEngine textTemplateEngine;
+    // @Autowired
+    // private TemplateEngine textTemplateEngine;
 
     @Value("${app.mail.signup.from}")
     private String signupMailFrom;
@@ -50,7 +50,7 @@ public class EmailServiceImpl {
     private String signupMailSubject;
 
     public void sendSignupEmailForUser(User user) {
-        RefreshToken refresh = refreshTokenService.createRefreshToken(user.id);
+        RefreshToken refresh = refreshTokenService.createRefreshToken(user.getId());
         String token = refresh.getToken();
 
         final Context ctx = new Context();
@@ -67,9 +67,9 @@ public class EmailServiceImpl {
             message.setSubject(signupMailSubject);
 
             String textHtml = this.htmlTemplateEngine.process(EMAIL_HTML_TEMPLATE_NAME, ctx);
-            String textPlain = this.textTemplateEngine.process(EMAIL_TEXT_TEMPLATE_NAME, ctx);
+//            String textPlain = this.textTemplateEngine.process(EMAIL_TEXT_TEMPLATE_NAME, ctx);
             message.setText(textHtml, true);
-            message.setText(textPlain, false);
+//            message.setText(textPlain, false);
 
             // Add the inline image, referenced from the HTML code as "cid:${imageResourceName}"
             // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);

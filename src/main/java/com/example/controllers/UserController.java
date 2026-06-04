@@ -20,6 +20,7 @@ import com.example.security.service.RefreshTokenService;
 import com.example.security.service.UserDetailsImpl;
 import com.example.service.EmailServiceImpl;
 
+import java.util.HashMap;
 import java.util.List;
 
 // import org.slf4j.Logger;
@@ -30,8 +31,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -74,6 +75,31 @@ public class UserController {
 	@Autowired
 	private EmailServiceImpl emailService;
 
+
+    // inject via application.properties
+    @Value("${pod-name:}")
+    private String podName;
+    // inject via application.properties
+    @Value("${pod-namespace:}")
+    private String podNamespace;
+    // inject via application.properties
+    @Value("${pod-id:}")
+    private String podId;
+
+	@GetMapping(path="/status")
+	public ResponseEntity<?> getStatus() {
+		HashMap<String, String> map = new HashMap<>();	
+		if (!podName.isEmpty()) 		map.put("podName", podName);
+		if (!podNamespace.isEmpty()) 	map.put("podNamespace", podNamespace);
+		if (!podId.isEmpty()) 			map.put("podId", podId);
+		try {
+			map.put("userCount", Long.toString(userRepo.count()));
+		} catch (Exception e) {
+			map.put("error", e.getMessage());
+		}
+		return ResponseEntity.ok(map);
+	}
+
 	@PostMapping(path="/login")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
@@ -104,17 +130,37 @@ public class UserController {
 
 	@PostMapping(path="/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
+		if (!request.isPasswordValid()) {
+			return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new MessageResponse("Passwords are not valid!"));
+		}
+		if (!request.isFirstNameValid()) {
+			return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new MessageResponse("First Name is not valid!"));
+		}
+		if (!request.isLastNameValid()) {
+			return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new MessageResponse("Last Name is not valid!"));
+		}
+		if (!request.isEmailValid()) {
+			return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new MessageResponse("Email is not valid!"));
+		}
 		if (userRepo.existsByEmail(request.getEmail())) {
 			return ResponseEntity
 				.status(HttpStatus.BAD_REQUEST)
-				.body(new MessageResponse("A user with that email already exists!"));
+				.body(new MessageResponse("That Email already exists!"));
 		}
-
 		User newUser = new User(
 			request.getEmail(), 
 			request.getFirstName(),
 			request.getLastName(),
-			passwordEncoder.encode(request.getPassword()));
+			passwordEncoder.encode(request.getPassword())
+		);
 		User savedUser = userRepo.save(newUser);
 
 		emailService.sendSignupEmailForUser(savedUser);

@@ -9,8 +9,6 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -185,6 +182,7 @@ public class UserControllerTest {
             email, 
             "tester", 
             "test", 
+            "abc123",
             "abc123");
         
         when(userRepo.existsByEmail(email))
@@ -206,6 +204,7 @@ public class UserControllerTest {
             email, 
             "tester", 
             "test", 
+            "abc123",
             "abc123");
         
         User user = new User(

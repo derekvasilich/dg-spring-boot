@@ -39,11 +39,11 @@ public class WebSecurityTestConfig {
         User adminUser = new User("admin@company.com", "test", "test", pwd);
         User devUser = new User("dev@company.com", "test", "test", pwd);
         
-        basicUser.id = 1L;
+        basicUser.setId(1L);
         basicUser.role = "user"; 
-        adminUser.id = 2L;
+        adminUser.setId(2L);
         adminUser.role = "admin"; 
-        devUser.id = 3L;
+        devUser.setId(3L);
         devUser.role = "developer"; 
 
         userDetailsManager = new InMemoryUserDetailsManager(Arrays.asList(

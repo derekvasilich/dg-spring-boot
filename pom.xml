@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>hellospringboot</artifactId>
+	<artifactId>dg-spring-boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>HelloSpringBoot</name>
+	<name>DG Spring Boot</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -130,6 +130,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<imageName>docker.io/derekvasilich/dg-spring-boot:latest</imageName>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

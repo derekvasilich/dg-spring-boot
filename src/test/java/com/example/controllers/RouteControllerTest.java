@@ -19,12 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.configuration.WebSecurityTestConfig;
 import com.example.models.Route;
-import com.example.models.Quote;
-import com.example.models.User;
 import com.example.models.RouteLocationVisit;
-import com.example.repositories.QuoteRepository;
 import com.example.repositories.RouteLocationVisitRepository;
-import com.example.repositories.UserRepository;
 import com.example.repositories.RouteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
