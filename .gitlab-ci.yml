@@ -22,7 +22,7 @@ variables:
     --fail-at-end
     --show-version
     -DinstallAtEnd=true
-    -DdeployAtEnd=true  
+    -DdeployAtEnd=false  
 
 cache:
   key: 
@@ -64,5 +64,11 @@ java-build-and-test:
 
 deploy:
   stage: deploy
-  script: echo "Define your deployment script!"
+  ## service: docker-in-docker
+  type: manual
+  variables:
+    ## variables to connect with docker
+  script: 
+    - mvn -Dspring-boot.build-image.imageName=docker.io/derekvasilich/dg-spring-boot:latest spring-boot:build-image
+    - docker push docker.io/derekvasilich/dg-spring-boot:latest
   environment: production
