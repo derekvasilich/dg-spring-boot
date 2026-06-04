@@ -1,6 +1,38 @@
 version: '3.9'
 
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - dg-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+    networks:
+      - dg-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
   app:
     build: .
     ports:
@@ -13,9 +45,13 @@ services:
       - 'SPRING_APPLICATION_JSON={"app":{"jwtSecret":"ReplaceWithYourJwtSecret","jwtSigningAlgorithm":"HS256","jwtExpirationMs":3600000,"jwtRefreshExpirationMs":86400000,"security":{"cors":{"allowedOrigin":"http://localhost:8080"}}}}'
       - APP_JWT_EXPIRATION_MS=3600000
       - APP_JWT_REFRESH_EXPIRATION_MS=86400000
-      - APP_SECURITY_CORS_ALLOWED_ORIGIN=http://localhost:8080`
+      - APP_SECURITY_CORS_ALLOWED_ORIGIN=http://localhost:8080
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
     depends_on:
       - db
+      - kafka
+    networks:
+      - dg-network
 
   db:
     image: mysql:8.0
@@ -27,6 +63,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - dg-network
+
+networks:
+  dg-network:
+    driver: bridge
 
 volumes:
   mysql-data:

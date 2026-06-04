@@ -153,22 +153,78 @@ Kafka is configured with:
 - `KafkaTopicConfig` for admin-level topic creation
 - asynchronous onboarding and event-driven workflow support
 
+## Docker containerization
+
+This project includes full Docker support for local development and deployment:
+
+### Services
+
+- **Spring Boot App** (`eclipse-temurin:11-jre`): Multi-stage Maven build optimized for production
+- **MySQL 8.0**: Relational database with persistent volume
+- **Apache Kafka** (Confluent 7.5.0): Event streaming broker
+- **Zookeeper** (Confluent 7.5.0): Kafka coordination and broker management
+
+### Docker Compose Features
+
+- **Service networking**: All containers communicate via internal `dg-network` bridge
+- **Health checks**: Kafka waits until broker is ready before app starts
+- **Persistent volumes**: MySQL data persists across container restarts
+- **Auto topic creation**: Kafka automatically creates configured topics on startup
+- **Environment variable injection**: Simplified configuration via docker-compose.yml
+
+### Kafka Inside Docker
+
+Kafka runs with:
+- **Internal broker address**: `kafka:29092` (for Docker-to-Docker communication)
+- **External broker address**: `localhost:9092` (for host machine access)
+- **Auto-created topics**: `dg-spring-boot` topic for event streaming
+- **Single broker, single partition** for local development (configurable for production)
+
 ## Running locally
 
+### Option 1: Docker Compose (Recommended)
+
+The simplest way to run the entire stack with MySQL, Kafka, and Zookeeper:
+
+```bash
+docker-compose up
+```
+
+This starts:
+- **Spring Boot app** on `http://localhost:8080`
+- **MySQL database** on `localhost:3306`
+- **Kafka broker** on `localhost:9092`
+- **Zookeeper** on `localhost:2181`
+
+All services are automatically configured and networked together. Access REST endpoints at `/api/*` and GraphQL at `/api/graphql`.
+
+To run in background:
+```bash
+docker-compose up -d
+```
+
+To stop all services:
+```bash
+docker-compose down
+```
+
+### Option 2: Manual Setup
+
 1. Set the required Spring Boot properties or environment variables.
-2. Build the project:
+2. Ensure Kafka and MySQL are running (manually or via docker).
+3. Build the project:
 
 ```bash
 ./mvnw clean package
 ```
 
-3. Run the application:
+4. Run the application:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-4. Access REST endpoints at `/api/*` and GraphQL at `/api/graphql`.
+5. Access REST endpoints at `/api/*` and GraphQL at `/api/graphql`.
 
 ## Why this repository is a strong pinned example
 
