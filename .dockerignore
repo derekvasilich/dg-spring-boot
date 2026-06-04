@@ -1,0 +1,8 @@
+target/
+.idea/
+.vscode/
+*.log
+*.tmp
+*.swp
+**/node_modules
+**/target

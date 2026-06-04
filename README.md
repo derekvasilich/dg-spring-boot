@@ -80,6 +80,81 @@ This repository is designed as a strong example for Architect / Principal Archit
 
 > This application expects runtime database configuration for MySQL. Tests can run against the included H2 in-memory database.
 
+## Containerization
+
+A Dockerfile is included so this application can run as a containerized microservice in AWS Fargate or any container platform.
+
+Build the image:
+
+```bash
+docker build -t dg-spring-boot:latest .
+```
+
+Run locally:
+
+```bash
+docker run --rm -p 8080:8080 dg-spring-boot:latest
+```
+
+A `docker-compose.yml` is also provided for local development with MySQL:
+
+```bash
+docker compose up --build
+```
+
+This starts:
+- `app` on port `8080`
+- `db` MySQL 8 with database `dg_spring_boot`
+
+For Fargate, push the image to ECR or another container registry, then deploy the task definition with port `8080`.
+
+### Docker build note
+
+During image builds the Maven wrapper can sometimes pick up a `MAVEN_CONFIG` value from the builder environment (for example `/root/.m2`) which may be interpreted incorrectly as a Maven lifecycle phase. The included `Dockerfile` unsets `MAVEN_CONFIG` when running `./mvnw` to avoid the `Unknown lifecycle phase '/root/.m2'` error. If you see that error, rebuild with:
+
+```bash
+docker build --no-cache -t dg-spring-boot:latest .
+```
+
+Or set/clear `MAVEN_CONFIG` in your build stage (for example `ENV MAVEN_CONFIG=""`) to prevent wrapper argument injection.
+
+## Environment variables
+
+The application reads configuration from Spring `application.properties` keys. Provide values via environment variables (uppercase + underscores), `SPRING_APPLICATION_JSON`, or your platform's secret manager.
+
+| Environment variable | Property key | Description | Example |
+|---|---|---|---|
+| `SPRING_DATASOURCE_URL` | `spring.datasource.url` | JDBC connection URL for the runtime database | `jdbc:mysql://db:3306/dg_spring_boot?useSSL=false&serverTimezone=UTC` |
+| `SPRING_DATASOURCE_USERNAME` | `spring.datasource.username` | Database username | `root` |
+| `SPRING_DATASOURCE_PASSWORD` | `spring.datasource.password` | Database password | `example` |
+| `APP_JWT_SECRET`, `APP_JWTSECRET` or `SPRING_APPLICATION_JSON` | `app.jwtSecret` | JWT signing secret (required) | `ReplaceWithYourJwtSecret` |
+| `APP_JWT_EXPIRATION_MS` | `app.jwtExpirationMs` | Access token TTL (ms) | `3600000` |
+| `APP_JWT_REFRESH_EXPIRATION_MS` | `app.jwtRefreshExpirationMs` | Refresh token TTL (ms) | `86400000` |
+| `APP_JWTSIGNINGALGORITHM` | `app.jwtSigningAlgorithm` | JWT signing algorithm | `HS256` |
+| `APP_SECURITY_SALT` | `app.security-salt` | Salt for the password encoder | `random-salt-value` |
+| `APP_SECURITY_ALGORITHM` | `app.security-algorithm` | MessageDigest algorithm used by password encoder | `SHA-256` |
+| `APP_SECURITY_CORS_ALLOWED_ORIGIN` | `app.security-cors-allowed-origin` | Comma-separated allowed CORS origins | `http://localhost:8080` |
+| `APP_MAIL_SIGNUP_FROM` | `app.mail.signup.from` | From address for signup emails | `info@dealergears.com` |
+| `APP_MAIL_SIGNUP_SUBJECT` | `app.mail.signup.subject` | Signup email subject | `Thanks for signing up to Dealer Gears!` |
+| `SPRING_MAIL_HOST` | `spring.mail.host` | SMTP host | `smtp.example.com` |
+| `SPRING_MAIL_PORT` | `spring.mail.port` | SMTP port | `587` |
+| `SPRING_MAIL_USERNAME` | `spring.mail.username` | SMTP username | (your SMTP user) |
+| `SPRING_MAIL_PASSWORD` | `spring.mail.password` | SMTP password | (your SMTP password) |
+| `SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH` | `spring.mail.properties.mail.smtp.auth` | SMTP auth flag | `true` |
+| `SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE` | `spring.mail.properties.mail.smtp.starttls.enable` | SMTP STARTTLS flag | `true` |
+
+Notes:
+
+- Spring Boot does relaxed binding: `APP_JWT_SECRET`, `app.jwt-secret`, and `app.jwtSecret` all map to `app.jwtSecret`.
+- Do not commit secrets to `docker-compose.yml` for production. Use `SPRING_APPLICATION_JSON` or your cloud provider's secret manager in CI/CD.
+- If you see `Could not resolve placeholder 'app.jwtSecret'`, inspect the container environment with:
+
+```bash
+docker compose exec app env | grep -i jwt
+```
+
+and verify the expected variables are present.
+
 ## Tech stack
 
 - Java 11
