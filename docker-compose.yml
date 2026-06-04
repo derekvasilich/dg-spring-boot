@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/dg_spring_boot?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=example
+      - APP_JWTSECRET=ReplaceWithYourJwtSecret
+      - 'SPRING_APPLICATION_JSON={"app":{"jwtSecret":"ReplaceWithYourJwtSecret","jwtSigningAlgorithm":"HS256","jwtExpirationMs":3600000,"jwtRefreshExpirationMs":86400000,"security":{"cors":{"allowedOrigin":"http://localhost:8080"}}}}'
+      - APP_JWT_EXPIRATION_MS=3600000
+      - APP_JWT_REFRESH_EXPIRATION_MS=86400000
+      - APP_SECURITY_CORS_ALLOWED_ORIGIN=http://localhost:8080`
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: dg_spring_boot
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
